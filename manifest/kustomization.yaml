@@ -1,0 +1,4 @@
+---
+namespace: test-export-subnets
+resources:
+  - export-subnets.yaml

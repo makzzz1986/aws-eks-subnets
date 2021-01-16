@@ -1,0 +1,68 @@
+---
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: test-export-subnets
+# ---
+# apiVersion: rbac.authorization.k8s.io/v1
+# kind: ClusterRoleBinding
+# metadata:
+#   name: export-subnets
+# roleRef:
+#   apiGroup: rbac.authorization.k8s.io
+#   kind: ClusterRole
+#   name: export-subnets
+# subjects:
+# - kind: ServiceAccount
+#   name: export-subnets
+#   namespace: test-export-subnets
+# ---
+# apiVersion: rbac.authorization.k8s.io/v1
+# kind: ClusterRole
+# metadata:
+#   name: export-subnets
+# rules:
+# - apiGroups:
+#   - ""
+#   resources:
+#   - nodes
+#   verbs:
+#   - list
+#   - watch
+#   - get
+# ---
+# apiVersion: v1
+# kind: ServiceAccount
+# metadata:
+#   name: export-subnets
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: export-subnets
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: export-subnets
+  template:
+    metadata:
+      labels:
+        app: export-subnets
+    spec:
+      # serviceAccount: export-subnets
+      containers:
+        - image: golang:buster
+          imagePullPolicy: Always
+          resources:
+            requests:
+              memory: "128Mi"
+              cpu: ".1"
+            limits:
+              memory: "1024Mi"
+              cpu: ".5"
+          name: export-subnets
+          args:
+            - sleep
+            - "100000000"
+...
